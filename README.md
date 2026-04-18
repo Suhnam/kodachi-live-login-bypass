@@ -1,8 +1,8 @@
 # Kodachi Live Login Bypass
 Fix for Kodachi Linux live login issue by enabling autologin via system configuration changes.
 
-![Linux](https://img.shields.io/badge/Linux-Kodachi-blue)
-![Status](https://img.shields.io/badge/status-working-success)
+[![Linux](https://img.shields.io/badge/Linux-Kodachi-blue)](https://www.digi77.com/linux-kodachi/)
+[![Status](https://img.shields.io/badge/status-working-success)](https://distrowatch.com/table.php?distribution=kodachi)
 
 ## 🛠️ Kodachi Autologin Fix
 
