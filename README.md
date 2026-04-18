@@ -72,6 +72,7 @@ setparams 'Kodachi Live [*]'
 
 5. Save and exit (Ctrl + X and F10)
 #### WARNING - DONT REBOOT THE SISTEM (If you reboot the system, it will rewrite the configuration.)
+if the sistem dont start after F10 (black screen) just tap Ctrl + alt + DEL (for some reason this command dont reboot the system when in this screen but just enter in kodachi desktop)
 
 ## ⚠️ Security Warning
 
