@@ -1,0 +1,129 @@
+# 🐧 Kodachi Live Login Bypass
+
+Correção para o problema de login no modo live do Kodachi Linux habilitando login automático através de alterações na configuração do sistema.
+
+[![Linux](https://img.shields.io/badge/Linux-Kodachi-blue)](https://www.digi77.com/linux-kodachi/)
+[![Status](https://img.shields.io/badge/status-working-success)](https://distrowatch.com/table.php?distribution=kodachi)
+
+---
+
+## 🛠️ Correção de credenciais padrão dando erro no Kodachi
+
+### 📌 Visão Geral
+
+Este repositório documenta uma solução alternativa para um problema de login no ambiente live do Kodachi Linux, onde o sistema não aceita a senha correta (r@@t00) durante a primeira inicialização.
+
+A solução envolve modificar arquivos de configuração do sistema para habilitar login automático, permitindo o acesso ao sistema e a continuidade do processo de instalação ou uso do live.
+
+---
+
+## ❗ Problema
+
+Ao iniciar o Kodachi em modo live (testado com Balena Etcher, Ventoy e Rufus):
+
+* O sistema solicita uma senha
+* A senha correta é rejeitada (`r@@t00`)
+* O usuário não consegue acessar o ambiente gráfico
+
+Isso impede completamente o uso ou instalação do sistema.
+
+---
+
+## 🔍 Possível Causa
+
+Esse comportamento pode estar relacionado a:
+
+* Gerenciador de login (display manager) mal configurado
+* Problemas de autenticação no ambiente live
+* Bugs em versões específicas do Kodachi
+
+*(A causa exata pode variar dependendo da versão — neste caso foi utilizada a versão linux-kodachi-xfce-9.0.1-amd64)*
+
+---
+
+## ✅ Solução (Workaround com Autologin)
+
+O problema pode ser contornado habilitando o login automático através da configuração do sistema via GNU/GRUB.
+
+### Passos:
+
+1. Inicie no modo recovery ou shell root (via GRUB)
+2. Na tela de inicialização do Kodachi, pressione **E** para editar as configurações de boot diretamente
+3. Localize as opções:
+
+   * `random.trust_cpu=off`
+   * `random.trust_bootloader=off`
+   * `noautologin`
+
+4. Altere para:
+
+   * `random.trust_cpu=on`
+   * `random.trust_bootloader=on`
+   * `autologin`
+
+**Nota:**
+Se for instalar o Kodachi usando o instalador nativo (dentro do live), altere também as configurações de bloqueio de tela. Caso contrário, o sistema pedirá login novamente e será necessário repetir o processo (acredite, eu esqueci de fazer isso na primeira vez).
+
+---
+
+### Exemplo (arquivo original):
+
+```bash
+setparams 'Kodachi Live [*]'
+
+      set gtfpayload=keep
+      linux     /live/vmlinuz-6.12.74+deb13+1-amd64 boot=live components noeject hostname=kodachi slab_nomerge init_on_alloc=1 vsycall=none random.trust_cpu=off random.trust_bootloader=off username=kodachi noautologin ---
+      initrd    /live/initrd.img-6.12.74+deb13+1-amd64
+```
+
+---
+
+### Como deve ficar:
+
+```bash
+setparams 'Kodachi Live [*]'
+
+      set gtfpayload=keep
+      linux     /live/vmlinuz-6.12.74+deb13+1-amd64 boot=live components noeject hostname=kodachi slab_nomerge init_on_alloc=1 vsycall=none random.trust_cpu=on random.trust_bootloader=on username=kodachi autologin ---
+      initrd    /live/initrd.img-6.12.74+deb13+1-amd64
+```
+
+---
+
+5. Salve e saia (**Ctrl + X** ou **F10**)
+
+### ⚠️ ATENÇÃO
+
+**NÃO reinicie o sistema manualmente após isso.**
+Se reiniciar, a configuração será perdida.
+
+* Caso a tela fique preta após pressionar F10:
+  pressione **Ctrl + Alt + Del**
+  (por algum motivo que eu desconheço isso não reinicia o sistema apenas continua o boot normalmente)
+
+---
+
+## ⚠️ Aviso de Segurança
+
+Habilitar autologin:
+
+* Ignora o processo de autenticação
+* Reduz a segurança do sistema
+* Deve ser usado apenas como solução temporária
+
+**Não utilize essa configuração em ambientes de produção ou sensíveis.**
+
+---
+
+## 🧪 Testado em
+
+* Kodachi Linux (USB Live via Balena Etcher)
+* Pendrive Samsung BAR Plus 256 GB – USB 3.1 (400 MB/s)
+* Boot via GRUB
+* Problema reproduzido e corrigido com sucesso
+
+---
+
+## 🤝 Contribuições
+
+Se você encontrou o mesmo problema ou descobriu outra solução, sinta-se à vontade para abrir uma issue ou enviar um pull request.
